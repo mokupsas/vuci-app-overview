@@ -36,7 +36,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import Card from './components/Card.vue'
+import Card from './Card.vue'
 
 // Adds properties to card row array values
 const addCardRowProperties = obj => {
@@ -316,14 +316,21 @@ methods: {
   async getInterfaceCards () {
     return await this.$network.load().then(() => {
       const ifaces = this.$network.getInterfaces()
-
       // Formating cards
       const cards = []
 
       ifaces.forEach(iface => {
+        let icon
+        if (iface.status.up) {
+          icon = require('../../public/icons/port_up.png')
+        } else {
+          icon = require('../../public/icons/port_down.png')
+        }
+
         const propedRows = [
           ['TYPE', 'wired'],
-          ['IP ADDRESS', iface.getIPv4Addrs().join(' ')]
+          ['IP ADDRESS', iface.getIPv4Addrs().join(' ')],
+          [null, icon, 'icon', true]
         ]
         this.addCardRowsProps(propedRows)
 
